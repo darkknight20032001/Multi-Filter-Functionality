@@ -49,8 +49,10 @@ const ShowData: React.FC = () => {
       }
     }
     filterMyData();
+    console.log("Filtered Data ", filteredData);
   }, [selectCategory]);
-
+  console.log("selectCategory ", selectCategory);
+  console.log("filteredData: ", filteredData);
   return (
     <div>
       {myCategory.length > 0 &&
