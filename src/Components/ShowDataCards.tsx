@@ -18,11 +18,14 @@ const ShowDataCards: React.FC<{
   const [clicked, setClicked] = useState<boolean>(false);
   useEffect(() => {
     function addCat() {
+      const arrCategory: string[] = [...selectCategory]; 
       if (clicked) {
-        const arr: Set<string> = new Set([...selectCategory, itemCat]);
+        const arr: Set<string> = new Set([...arrCategory, itemCat]);
         setSelectCategory(Array.from(arr));
       } else {
-        const removeCat: string[] = selectCategory.filter((catItem) => {
+        const arr: Set<string> = new Set([...selectCategory]);
+        const deletedArr: string[] = Array.from(arr);
+        const removeCat: string[] = deletedArr.filter((catItem: string) => {
           return catItem !== itemCat;
         });
         setSelectCategory(removeCat);
