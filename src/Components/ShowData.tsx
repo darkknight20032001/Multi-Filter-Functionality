@@ -19,14 +19,13 @@ const ShowData: React.FC = () => {
 
   useEffect(() => {
     function getCategory() {
-      if (publicData.length > 0) {
-        let arrCategory: string[] = [];
-        publicData.map((item: apiData) => {
-          arrCategory.push(item.Category);
-        });
-        const category: Set<string> = new Set(arrCategory);
-        setMyCategory(Array.from(category));
-      }
+      let arrCategory: string[] = [];
+      publicData.forEach((item: apiData) => {
+        
+        arrCategory.push(item.Category);
+      });
+      const category: Set<string> = new Set(arrCategory);
+      setMyCategory(Array.from(category));
     }
     getCategory();
   }, [publicData]);
@@ -34,18 +33,12 @@ const ShowData: React.FC = () => {
   useEffect(() => {
     function filterMyData() {
       if (selectCategory.length > 0) {
-        let arrProduct: apiData[] = [];
-        selectCategory.map((dataCat) => {
-          const dataToFilter: apiData[] = publicData.filter((itemData) => {
-            return dataCat === itemData.Category;
-          });
-          arrProduct.push(...dataToFilter);
+        const dataToFilter: apiData[] = publicData.filter((itemData) => {
+          return selectCategory.includes(itemData.Category);
         });
-        const arrUnq: Set<apiData> = new Set(arrProduct);
-        setFilteredData(Array.from(arrUnq));
+        setFilteredData(dataToFilter);
       } else {
-        console.log("hello");
-        setFilteredData([]);
+        setFilteredData(publicData);
       }
     }
     filterMyData();
@@ -55,39 +48,27 @@ const ShowData: React.FC = () => {
   console.log("filteredData: ", filteredData);
   return (
     <div>
-      {myCategory.length > 0 &&
-        myCategory.map((itemCat: string) => {
-          return (
-            <ShowDataCards
-              itemCat={itemCat}
-              publicData={publicData}
-              setFilteredData={setFilteredData}
-              selectCategory={selectCategory}
-              setSelectCategory={setSelectCategory}
-            />
-          );
-        })}
-      {publicData.length > 0 &&
-        filteredData.length === 0 &&
-        publicData.map((itemData: apiData) => {
-          return (
-            <li key={itemData.API}>
-              <div>{itemData.API}</div>
+      {myCategory.map((itemCat: string) => {
+        return (
+          <ShowDataCards
+            itemCat={itemCat}
+            publicData={publicData}
+            setFilteredData={setFilteredData}
+            selectCategory={selectCategory}
+            setSelectCategory={setSelectCategory}
+          />
+        );
+      })}
+
+      {filteredData.map((itemData: apiData) => {
+        return (
+          <li key={itemData.API+Math.random().toString()}>
+            <div>{itemData.API}</div>
               <div>{itemData.Description}</div>
-              <div>{itemData.Category}</div>
-            </li>
-          );
-        })}
-      {publicData.length > 0 &&
-        filteredData.map((itemData: apiData) => {
-          return (
-            <li key={itemData.API}>
-              <div>{itemData.API}</div>
-              <div>{itemData.Description}</div>
-              <div>{itemData.Category}</div>
-            </li>
-          );
-        })}
+            <div>{itemData.Category}</div>
+          </li>
+        );
+      })}
     </div>
   );
 };

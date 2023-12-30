@@ -8,25 +8,16 @@ const ShowDataCards: React.FC<{
   setFilteredData: (data: apiData[]) => void;
   selectCategory: string[];
   setSelectCategory: (category: string[]) => void;
-}> = ({
-  itemCat,
-  publicData,
-  setFilteredData,
-  setSelectCategory,
-  selectCategory,
-}) => {
+}> = ({ itemCat, setSelectCategory, selectCategory }) => {
   const [clicked, setClicked] = useState<boolean>(false);
   useEffect(() => {
     function addCat() {
-      const arrCategory: string[] = [...selectCategory];
+      // const arrCategory: string[] = [...selectCategory];
       if (clicked) {
-        const arr: Set<string> = new Set([...arrCategory, itemCat]);
-        setSelectCategory(Array.from(arr));
-        console.log(Array.from(arr));
+        // const arr: Set<string> = new Set([...arrCategory, itemCat]);
+        setSelectCategory([...selectCategory, itemCat]);
       } else {
-        const arr: Set<string> = new Set([...selectCategory]);
-        const deletedArr: string[] = Array.from(arr);
-        const removeCat: string[] = deletedArr.filter((catItem: string) => {
+        const removeCat: string[] = selectCategory.filter((catItem: string) => {
           return catItem !== itemCat;
         });
         setSelectCategory(removeCat);
@@ -35,13 +26,12 @@ const ShowDataCards: React.FC<{
     }
     addCat();
   }, [clicked]);
-  
+
   return (
     <div
       className={clicked ? "clickCards" : "Cards"}
       key={itemCat}
-      onClick={(e) => {
-        e.preventDefault();
+      onClick={() => {
         setClicked(!clicked);
       }}
     >
